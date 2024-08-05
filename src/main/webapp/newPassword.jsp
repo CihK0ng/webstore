@@ -12,6 +12,8 @@
 	rel='stylesheet'>
 <script type='text/javascript'
 	src='https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js'></script>
+	<link rel="stylesheet"
+		href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.css">
 <style>
 .placeicon {
 	font-family: fontawesome
@@ -24,8 +26,7 @@
 </style>
 </head>
 <body oncontextmenu='return false' class='snippet-body bg-info'>
-	<link rel="stylesheet"
-		href="https://cdnjs.cloudflare.com/ajax/libs/bootstrap-social/5.1.1/bootstrap-social.css">
+	
 	<div>
 		<!-- Container containing all contents -->
 		<div class="container">
@@ -96,6 +97,19 @@
 	</div>
 	<script type='text/javascript'
 		src='https://stackpath.bootstrapcdn.com/bootstrap/4.1.1/js/bootstrap.bundle.min.js'></script>
+		
+		<script type="text/javascript">
+		var status = document.getElementById("status").value;
+		if(status === "failed"){
+		swal("Sorry","Wrong username or password","error");
+		}
+		else if(status === "resetSuccess") {
+			swal("Congrats","Password reser successful", "success");
+		}
+		else if(status === "resetFailed") {
+			swal("Sorry","Password Reset Failed", "error");
+		}
+</script>
 	
 </body>
 </html>

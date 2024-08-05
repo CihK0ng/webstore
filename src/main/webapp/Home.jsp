@@ -1,3 +1,7 @@
+<%@page import="com.entity.BookDtls"%>
+<%@page import="java.util.List"%>
+<%@page import="com.DB.DBconnect"%>
+<%@page import="com.DAO.BookDAOImpl"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -14,7 +18,7 @@
 <link rel="stylesheet" href="css/styleh.css">
 
 
-<title>Insert title here</title>
+<title>Home</title>
 
 
 <style type="text/css">
@@ -25,13 +29,17 @@
 	background-repeat: no-repeat;
 	background-size: cover;
 }
+
+.crd-ho:hover {
+	background-color: #ececec;
+}
 </style>
 </head>
 <body>
 	<div class="container-fluid"
 		style="height: 5px; background-color: #ffab91"></div>
 
-	<div class="container-fluid p-3">
+	<div class="container-fluid p-3 bg-light">
 		<div class="row">
 			<div class="col-md-3">
 				<h3>
@@ -47,11 +55,23 @@
 			</div>
 
 			<div class="col-md-3">
-				<a href="" class="btn btn-success ">Login</a> <a href=""
-					class="btn btn-primary ">Register</a>
+				<%
+				HttpSession session5 = request.getSession(false);
+				String userName = (session5 != null) ? (String) session5.getAttribute("name") : null;
+				if (userName != null) {
+				%>
+				<a href="#" class="btn btn-success"><%=userName%></a>
+				
+				<%
+				} else {
+				%>
+				<a href="login.jsp" class="btn btn-success">Login</a>
+				<%
+				}
+				%>
+				<a href="logout" class="btn btn-primary ">Logout</a>
 
 			</div>
-
 		</div>
 	</div>
 
@@ -68,13 +88,16 @@
 			<div class="collapse navbar-collapse" id="navbarSupportedContent">
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active"><a class="nav-link"
-						aria-current="page" href="#">Home<span class="sr-only">(Current)</span></a></li>
-					<li class="nav-item active"><a class="nav-link" href="#"><i
-							class="fa-solid fa-book-open"></i> Recent</a></li>
-					<li class="nav-item active"><a class="nav-link" href="#"><i
-							class="fa-solid fa-book-open"></i> New Book</a></li>
+						aria-current="page" href="Home.jsp">Home<span class="sr-only">(Current)</span></a></li>
+					<li class="nav-item active"><a class="nav-link"
+						href="all_recentbook.jsp"><i class="fa-solid fa-book-open"></i>
+							Recent</a></li>
+					<li class="nav-item active"><a class="nav-link"
+						href="all_newbook.jsp"><i class="fa-solid fa-book-open"></i>
+							New Book</a></li>
 					<li class="nav-item active"><a class="nav-link disabled"
-						aria-disabled="true"><i class="fa-solid fa-book"></i> Old Book</a></li>
+						href="all_oldbook.jsp" aria-disabled="true"><i
+							class="fa-solid fa-book"></i> Old Book</a></li>
 				</ul>
 				<form class="form-inline my-2 my-lg-0" role="search">
 					<button class="btn btn-light my-2 my-sm-0" type="submit">
@@ -94,32 +117,182 @@
 		<h3>WeBooks Management System</h3>
 	</nav>
 
+
+	<!--  start recent book  -->
 	<div class="container">
 		<h3 class="text-center">Recent Book</h3>
 		<div class="row">
 
+			<%
+			try {
+				BookDAOImpl dao2 = new BookDAOImpl(DBconnect.getConn());
+				List<BookDtls> list2 = dao2.getRecentBook();
+				if (list2 != null && !list2.isEmpty()) {
+					for (BookDtls b : list2) {
+			%>
 			<div class="col-md-3">
-				<div class="card" class="text-center">
-					<div class="card-body">
-						<img alt="" src="images/java.jpg" style="height: 150px; width: 200px">
-						<p>Java Program</p>
-						<p>Surbhi Kakar</p>
-						<p>Categories: New</p>
+				<div class="card crd-ho">
+					<div class="card-body text-center">
+						<img alt="" src="book/<%=b.getUphoto()%>"
+							style="height: 200px; width: 150px" class="img-thumbnail">
+						<p><%=b.getUbookname()%></p>
+						<p><%=b.getUauthor()%></p>
+
+						<p>
+							Categories:
+							<%=b.getUbookCategory()%></p>
+						<%
+						if (b.getUbookCategory().equals("Old")) {
+						%>
 
 						<div class="row">
-							<a href="" class="byn btn-success btn-sm">Buy</a> 
-							<a href="" class="byn btn-primary btn-sm">Add Card</a> 
-							<a href="" class="byn btn-danger btn-sm">300</a>
+							<a href="viewbook.jsp?bid=<%=b.getBookId()%>"
+								class="btn btn-success btn-sm ml-5">View Detail</a> <a href=""
+								class="btn btn-primary btn-sm ml-1"><%=b.getUprice()%> <i
+								class="fa-solid fa-dollar-sign"></i> </a>
+						</div>
+						<%
+						} else {
+						%>
+
+						<div class="row">
+							<a href="" class="btn btn-danger btn-sm ml-1"><i
+								class="fa-solid fa-cart-shopping"></i> Add Cart</a> <a
+								href="viewbook.jsp?bid=<%=b.getBookId()%>"
+								class="btn btn-success btn-sm ml-2">View Detail</a> <a href=""
+								class="btn btn-primary btn-sm "><%=b.getUprice()%> <i
+								class="fa-solid fa-dollar-sign"></i> </a>
+						</div>
+						<%
+						}
+						%>
+					</div>
+				</div>
+			</div>
+			<%
+			}
+			}
+			} catch (Exception e) {
+			e.printStackTrace();
+			}
+			%>
+
+		</div>
+
+
+		<div class="text-center">
+			<a href="" class="btn btn-danger btn-sm text-white">View All</a>
+		</div>
+	</div>
+	<!--  end reccent book  -->
+
+	<hr>
+
+	<!--  start new book  -->
+	<div class="container">
+		<h3 class="text-center">New Book</h3>
+		<div class="row">
+			<%
+			try {
+				BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
+				List<BookDtls> list = dao.getNewBook();
+				if (list != null && !list.isEmpty()) {
+					for (BookDtls b : list) {
+			%>
+			<div class="col-md-3">
+				<div class="card crd-ho">
+					<div class="card-body text-center">
+						<img alt="" src="book/<%=b.getUphoto()%>"
+							style="height: 200px; width: 150px" class="img-thumbnail">
+						<p><%=b.getUbookname()%></p>
+						<p><%=b.getUauthor()%></p>
+						<p>
+							Categories:
+							<%=b.getUbookCategory()%></p>
+						<div class="row">
+							<a href="" class="btn btn-danger btn-sm ml-1"><i
+								class="fa-solid fa-cart-shopping"></i> Add Cart</a> <a
+								href="viewbook.jsp?bid=<%=b.getBookId()%>"
+								class="btn btn-success btn-sm ml-2">View Detail</a> <a href=""
+								class="btn btn-primary btn-sm ml-1"><%=b.getUprice()%> <i
+								class="fa-solid fa-dollar-sign"></i> </a>
 						</div>
 					</div>
 				</div>
 			</div>
-
+			<%
+			}
+			}
+			} catch (Exception e) {
+			e.printStackTrace();
+			}
+			%>
 
 		</div>
+
+		<div class="text-center mt-1">
+			<a href="" class="btn btn-danger btn-sm text-white">View All</a>
+		</div>
 	</div>
+	<!--  end new book  -->
+
+	<hr>
 
 
+	<!--  start old book  -->
+	<div class="container">
+		<h3 class="text-center">Old Book</h3>
+		<div class="row">
+
+			<%
+			try {
+				BookDAOImpl dao3 = new BookDAOImpl(DBconnect.getConn());
+				List<BookDtls> list3 = dao3.getOldBook();
+				if (list3 != null && !list3.isEmpty()) {
+					for (BookDtls b : list3) {
+			%>
+			<div class="col-md-3">
+				<div class="card crd-ho">
+					<div class="card-body text-center">
+						<img alt="" src="book/<%=b.getUphoto()%>"
+							style="height: 200px; width: 150px" class="img-thumbnail">
+						<p><%=b.getUbookname()%></p>
+						<p><%=b.getUauthor()%></p>
+						<p>
+							Categories:
+							<%=b.getUbookCategory()%></p>
+						<div class="row">
+							<a href="viewbook.jsp?bid=<%=b.getBookId()%>"
+								class="btn btn-success btn-sm ml-5">View Detail</a> <a href=""
+								class="btn btn-primary btn-sm "><%=b.getUprice()%> <i
+								class="fa-solid fa-dollar-sign"></i> </a>
+						</div>
+					</div>
+				</div>
+			</div>
+			<%
+			}
+			}
+			} catch (Exception e) {
+			e.printStackTrace();
+			}
+			%>
+		</div>
+
+		<div class="text-center mt-1">
+			<a href="" class="btn btn-danger btn-sm text-white">View All</a>
+		</div>
+	</div>
+	<!--  end old book  -->
+
+
+
+	<!--  start footer le cuoi trang  -->
+	<div class="container-fuild text-center text-black p-3"
+		style="background-color: #ffab91;">
+		<h3>Design and developed by chinh - giang</h3>
+
+	</div>
 
 
 

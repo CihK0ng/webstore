@@ -13,16 +13,17 @@ import javax.servlet.http.HttpSession;
 /**
  * Servlet implementation class Logout
  */
-@WebServlet("/Logout")
+
 public class Logout extends HttpServlet {
 	private static final long serialVersionUID = 1L;
   
 	//  button thoat khoi tai khoan 
 	protected void doPost(HttpServletRequest request, HttpServletResponse response) throws ServletException, IOException {
 		
-		HttpSession session = request.getSession();
-		session.invalidate();  // ket thuc 1 session lam viec 
-		RequestDispatcher dp = request.getRequestDispatcher("login.jsp");
+//		HttpSession session = request.getSession();
+//		session.invalidate();  // ket thuc 1 session lam viec 
+//		RequestDispatcher dp = request.getRequestDispatcher("login.jsp");
+//		dp.forward(request, response);
 	}
 
 }

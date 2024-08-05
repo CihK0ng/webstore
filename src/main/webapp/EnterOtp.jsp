@@ -32,7 +32,7 @@
 							</h3>
 							<h2 class="text-center">Enter OTP</h2>
 			<%
-		  			if(request.getAttribute("message")!=null)
+		  			if(request.getAttribute("message") != null)
 		  			{
 		  				out.print("<p class='text-danger ml-1'>"+request.getAttribute("message")+"</p>");
 		  			}

@@ -5,6 +5,7 @@ import java.io.PrintWriter;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.PreparedStatement;
+import java.sql.ResultSet;
 
 import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
@@ -42,8 +43,22 @@ public class RegistrationServlet extends HttpServlet {
 		try {
 			Class.forName("com.mysql.cj.jdbc.Driver");
 			con = DriverManager.getConnection("jdbc:mysql://localhost:3306/youtube?useSSL=false", "root", "Chinh2002@");
-			PreparedStatement pst = con.prepareStatement("insert into users(uname, upwd, uemail, umobile) values(?,?,?,?) ");
 			
+			//kiem tra xem co ton tại email hay không 
+			PreparedStatement checkEmailStmt = con.prepareStatement("SELECT COUNT(*) FROM users WHERE uemail = ?");
+            checkEmailStmt.setString(1, uemail);
+            ResultSet rs = checkEmailStmt.executeQuery();
+            rs.next();
+            if (rs.getInt(1) > 0) {
+                // Email already exists
+                request.setAttribute("status", "emailexists");
+                dp = request.getRequestDispatcher("registration.jsp");
+                dp.forward(request, response);
+                return;
+            }
+			
+			
+			PreparedStatement pst = con.prepareStatement("insert into users(uname, upwd, uemail, umobile) values(?,?,?,?) ");
 			pst.setString(1, uname);
 			pst.setString(2, upwd);
 			pst.setString(3, uemail);
@@ -71,6 +86,8 @@ public class RegistrationServlet extends HttpServlet {
 		
 		}
 	}
+	
+	
 
 }
 
