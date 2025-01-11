@@ -1,9 +1,11 @@
+<%@page import="com.entity.User"%>
 <%@page import="com.entity.BookDtls"%>
 <%@page import="java.util.List"%>
 <%@page import="com.DB.DBconnect"%>
 <%@page import="com.DAO.BookDAOImpl"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html>
 <head>
@@ -36,6 +38,9 @@
 </style>
 </head>
 <body>
+
+
+
 	<div class="container-fluid"
 		style="height: 5px; background-color: #ffab91"></div>
 
@@ -58,17 +63,23 @@
 				<%
 				HttpSession session5 = request.getSession(false);
 				String userName = (session5 != null) ? (String) session5.getAttribute("name") : null;
+				User userObj = (session5 != null) ? (User) session5.getAttribute("userobj") : null;
+				
 				if (userName != null) {
 				%>
-				<a href="#" class="btn btn-success"><%=userName%></a>
-				
+				<a href=""> <i class="fa-solid fa-cart-shopping"></i>
+				</a> <a href="#" class="btn btn-success"><%=userName%></a>
+
 				<%
 				} else {
 				%>
+
 				<a href="login.jsp" class="btn btn-success">Login</a>
+
 				<%
 				}
 				%>
+
 				<a href="logout" class="btn btn-primary ">Logout</a>
 
 			</div>
@@ -122,13 +133,12 @@
 	<div class="container">
 		<h3 class="text-center">Recent Book</h3>
 		<div class="row">
-
 			<%
 			try {
-				BookDAOImpl dao2 = new BookDAOImpl(DBconnect.getConn());
-				List<BookDtls> list2 = dao2.getRecentBook();
-				if (list2 != null && !list2.isEmpty()) {
-					for (BookDtls b : list2) {
+				BookDAOImpl dao = new BookDAOImpl(DBconnect.getConn());
+				List<BookDtls> list = dao.getNewBook();
+				if (list != null && !list.isEmpty()) {
+					for (BookDtls b : list) {
 			%>
 			<div class="col-md-3">
 				<div class="card crd-ho">
@@ -137,35 +147,34 @@
 							style="height: 200px; width: 150px" class="img-thumbnail">
 						<p><%=b.getUbookname()%></p>
 						<p><%=b.getUauthor()%></p>
-
 						<p>
 							Categories:
 							<%=b.getUbookCategory()%></p>
-						<%
-						if (b.getUbookCategory().equals("Old")) {
-						%>
-
 						<div class="row">
+							<%
+							if (userObj == null) {
+							%>
+							<a href="login.jsp" class="btn btn-danger btn-sm ml-1"> <i
+								class="fa-solid fa-cart-shopping"></i> Add Cart
+							</a>
+							<%
+							} else {
+									int userId = userObj.getId();
+									String nName = userObj.getUname();
+							%>
+							<a href="cart?bid=<%=b.getBookId()%>&uid=<%=userId%>"
+								class="btn btn-danger btn-sm ml-1"> <i
+								class="fa-solid fa-cart-shopping"></i> Add Cart
+							</a>
+							<%
+							}
+							%>
 							<a href="viewbook.jsp?bid=<%=b.getBookId()%>"
-								class="btn btn-success btn-sm ml-5">View Detail</a> <a href=""
-								class="btn btn-primary btn-sm ml-1"><%=b.getUprice()%> <i
-								class="fa-solid fa-dollar-sign"></i> </a>
-						</div>
-						<%
-						} else {
-						%>
-
-						<div class="row">
-							<a href="" class="btn btn-danger btn-sm ml-1"><i
-								class="fa-solid fa-cart-shopping"></i> Add Cart</a> <a
-								href="viewbook.jsp?bid=<%=b.getBookId()%>"
 								class="btn btn-success btn-sm ml-2">View Detail</a> <a href=""
-								class="btn btn-primary btn-sm "><%=b.getUprice()%> <i
-								class="fa-solid fa-dollar-sign"></i> </a>
+								class="btn btn-primary btn-sm ml-1"> <%=b.getUprice()%> <i
+								class="fa-solid fa-dollar-sign"></i>
+							</a>
 						</div>
-						<%
-						}
-						%>
 					</div>
 				</div>
 			</div>
@@ -176,7 +185,6 @@
 			e.printStackTrace();
 			}
 			%>
-
 		</div>
 
 
@@ -210,9 +218,10 @@
 							Categories:
 							<%=b.getUbookCategory()%></p>
 						<div class="row">
-							<a href="" class="btn btn-danger btn-sm ml-1"><i
-								class="fa-solid fa-cart-shopping"></i> Add Cart</a> <a
-								href="viewbook.jsp?bid=<%=b.getBookId()%>"
+
+							<a href="" onclick="" class="btn btn-danger btn-sm ml-1"> <i
+								class="fa-solid fa-cart-shopping"></i> Add Cart
+							</a> <a href="viewbook.jsp?bid=<%=b.getBookId()%>"
 								class="btn btn-success btn-sm ml-2">View Detail</a> <a href=""
 								class="btn btn-primary btn-sm ml-1"><%=b.getUprice()%> <i
 								class="fa-solid fa-dollar-sign"></i> </a>
@@ -238,16 +247,14 @@
 
 	<hr>
 
-
 	<!--  start old book  -->
 	<div class="container">
 		<h3 class="text-center">Old Book</h3>
 		<div class="row">
-
 			<%
 			try {
 				BookDAOImpl dao3 = new BookDAOImpl(DBconnect.getConn());
-				List<BookDtls> list3 = dao3.getOldBook();
+				List<BookDtls> list3 = dao3.getAllOldBook();
 				if (list3 != null && !list3.isEmpty()) {
 					for (BookDtls b : list3) {
 			%>
@@ -290,9 +297,11 @@
 	<!--  start footer le cuoi trang  -->
 	<div class="container-fuild text-center text-black p-3"
 		style="background-color: #ffab91;">
-		<h3>Design and developed by chinh - giang</h3>
+		<h3>Design and developed by chinh</h3>
 
 	</div>
+
+
 
 
 

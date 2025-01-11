@@ -1,3 +1,4 @@
+<%@page import="com.entity.User"%>
 <%@page import="com.DB.DBconnect"%>
 <%@page import="com.entity.BookDtls"%>
 <%@page import="java.util.List"%>
@@ -46,11 +47,29 @@
 			</div>
 
 			<div class="col-md-3">
-				<a href="login.jsp" class="btn btn-success ">Login</a> <a
-					href="registration.jsp" class="btn btn-primary ">Register</a>
+				<%
+				HttpSession session5 = request.getSession(false);
+				String userName = (session5 != null) ? (String) session5.getAttribute("name") : null;
+				User userObj = (session5 != null) ? (User) session5.getAttribute("userobj") : null;
+				
+				if (userName != null) {
+				%>
+				<a href=""> <i class="fa-solid fa-cart-shopping"></i>
+				</a> <a href="#" class="btn btn-success"><%=userName%></a>
+
+				<%
+				} else {
+				%>
+
+				<a href="login.jsp" class="btn btn-success">Login</a>
+
+				<%
+				}
+				%>
+
+				<a href="logout" class="btn btn-primary ">Logout</a>
 
 			</div>
-
 		</div>
 	</div>
 
@@ -68,12 +87,15 @@
 				<ul class="navbar-nav mr-auto">
 					<li class="nav-item active"><a class="nav-link"
 						aria-current="page" href="Home.jsp">Home<span class="sr-only">(Current)</span></a></li>
-					<li class="nav-item active"><a class="nav-link" href="all_recentbook.jsp"><i
-							class="fa-solid fa-book-open"></i> Recent</a></li>
-					<li class="nav-item active"><a class="nav-link" href="all_newbook.jsp"><i
-							class="fa-solid fa-book-open"></i> New Book</a></li>
-					<li class="nav-item active"><a class="nav-link disabled" href="all_oldbook.jsp"
-						aria-disabled="true"><i class="fa-solid fa-book"></i> Old Book</a></li>
+					<li class="nav-item active"><a class="nav-link"
+						href="all_recentbook.jsp"><i class="fa-solid fa-book-open"></i>
+							Recent</a></li>
+					<li class="nav-item active"><a class="nav-link"
+						href="all_newbook.jsp"><i class="fa-solid fa-book-open"></i>
+							New Book</a></li>
+					<li class="nav-item active"><a class="nav-link disabled"
+						href="all_oldbook.jsp" aria-disabled="true"><i
+							class="fa-solid fa-book"></i> Old Book</a></li>
 				</ul>
 				<form class="form-inline my-2 my-lg-0" role="search">
 					<button class="btn btn-light my-2 my-sm-0" type="submit">

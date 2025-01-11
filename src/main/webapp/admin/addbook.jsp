@@ -112,7 +112,7 @@
 									<option selected>--selected--</option>
 									<option value="New">New Book</option>
 							
-									<option value="New">old</option>
+									<option value="Old">old</option>
 							
 									<!-- Add more status options as needed -->
 								</select>
@@ -133,6 +133,8 @@
 									type="file" class="form-control-file" name="bimg"
 									id="exampleFormControlFile1">
 							</div>
+							<label for="pdf">Upload PDF:</label>
+   							 <input type="file" name="pdf" id="pdf" accept=".pdf" >
 
 							<button type="submit" class="btn btn-primary">Add</button>
 						</form>
@@ -145,7 +147,7 @@
 
 	<div class="container-fuild text-center text-black p-3"
 		style="background-color: #ffab91;">
-		<h3>Design and developed by chinh - giang</h3>
+		<h3>Design and developed by chinh </h3>
 
 	</div>
 	

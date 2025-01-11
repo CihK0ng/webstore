@@ -1,5 +1,7 @@
 package com.entity;
 
+import java.io.InputStream;
+
 public class BookDtls {
 
 	
@@ -11,7 +13,7 @@ public class BookDtls {
 	private String ustatus;
 	private String uphoto;
 	private String email;
-	
+	 private byte[] pdf;
 	
 	public BookDtls() {
 		super();
@@ -20,7 +22,7 @@ public class BookDtls {
 
 
 	public BookDtls(String ubookname, String uauthor, String uprice, String ubookCategory, String ustatus,
-			String uphoto, String email) {
+			String uphoto, String email, byte[] pdf) {
 		super();
 		this.ubookname = ubookname;
 		this.uauthor = uauthor;
@@ -29,6 +31,7 @@ public class BookDtls {
 		this.ustatus = ustatus;
 		this.uphoto = uphoto;
 		this.email = email;
+		this.pdf = pdf;  
 	}
 
 
@@ -112,12 +115,20 @@ public class BookDtls {
 	}
 
 
-	@Override
-	public String toString() {
-		return "BookDtls [bookId=" + bookId + ", ubookname=" + ubookname + ", uauthor=" + uauthor + ", uprice=" + uprice
-				+ ", ubookCategory=" + ubookCategory + ", ustatus=" + ustatus + ", uphoto=" + uphoto + ", email="
-				+ email + "]";
-	}
+    public byte[] getPdf() {
+        return pdf;
+    }
+
+    public void setPdf(byte[] pdf) {
+        this.pdf = pdf;
+    }
+	
+    @Override
+    public String toString() {
+        return "BookDtls [bookId=" + bookId + ", ubookname=" + ubookname + ", uauthor=" + uauthor + ", uprice=" + uprice
+                + ", ubookCategory=" + ubookCategory + ", ustatus=" + ustatus + ", uphoto=" + uphoto + ", email="
+                + email + "]";
+    }
 	
 	
 }

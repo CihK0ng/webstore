@@ -1,5 +1,6 @@
 package com.DAO;
 
+import java.io.InputStream;
 import java.util.List;
 
 import com.entity.BookDtls;
@@ -27,4 +28,6 @@ public interface BookDAO {
 	public List<BookDtls> getAllNewBook();
 	
 	public List<BookDtls> getAllRecentBook();
+
+	public BookDtls getPdfBook(int bookId);
 }

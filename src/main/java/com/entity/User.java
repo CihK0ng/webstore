@@ -2,7 +2,7 @@ package com.entity;
 
 public class User {
 
-	
+	private int id ;
 	private String uname = null;
 	private String upwd = null;
 	private String uemail = null;
@@ -21,6 +21,12 @@ public class User {
 	public User() {
 		super();
 		// TODO Auto-generated constructor stub
+	}
+	public int getId() {
+		return id;
+	}
+	public void setId(int id) {
+		this.id = id;
 	}
 	public String getUname() {
 		return uname;
@@ -78,10 +84,11 @@ public class User {
 	}
 	@Override
 	public String toString() {
-		return "User [uname=" + uname + ", upwd=" + upwd + ", uemail=" + uemail + ", umobile=" + umobile + ", uaddress="
-				+ uaddress + ", ucity=" + ucity + ", ulandmark=" + ulandmark + ", ustate=" + ustate + ", upincode="
-				+ upincode + "]";
+		return "User [id=" + id + ", uname=" + uname + ", upwd=" + upwd + ", uemail=" + uemail + ", umobile=" + umobile
+				+ ", uaddress=" + uaddress + ", ucity=" + ucity + ", ulandmark=" + ulandmark + ", ustate=" + ustate
+				+ ", upincode=" + upincode + "]";
 	}
+	
 
 	
 	

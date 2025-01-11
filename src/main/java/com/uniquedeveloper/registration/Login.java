@@ -14,6 +14,10 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import com.DAO.UserDAOImpl;
+import com.DB.DBconnect;
+import com.entity.User;
+
 /**
  * Servlet implementation class Login
  */
@@ -24,6 +28,8 @@ public class Login extends HttpServlet {
 	protected void doPost(HttpServletRequest request, HttpServletResponse response)
 			throws ServletException, IOException {
 		try {
+			
+			UserDAOImpl dao = new UserDAOImpl(DBconnect.getConn());
 
 			String uemail = request.getParameter("username");
 			String upwd = request.getParameter("password");
@@ -33,6 +39,8 @@ public class Login extends HttpServlet {
 
 			// kiem tra va dang nhap va admin
 			if ("admin@gmail.com".equals(uemail) && "admin".equals(upwd)) {
+				User u = new User();
+				session.setAttribute("userobj", u);
 				dispatch = request.getRequestDispatcher("admin/home.jsp");
 				dispatch.forward(request, response);
 				return;
@@ -49,10 +57,14 @@ public class Login extends HttpServlet {
 				PreparedStatement ps = con.prepareStatement("select * from users where uemail = ? and upwd = ?");
 				ps.setString(1, uemail);
 				ps.setString(2, upwd);
-
+				
+				
 				ResultSet result = ps.executeQuery();
 				if (result.next()) {
+					User us = dao.login(uemail, upwd);
+					
 					session.setAttribute("name", result.getString("uname"));
+					session.setAttribute("userobj", us);
 					dispatch = request.getRequestDispatcher("Home.jsp");
 				} else {
 					request.setAttribute("status", "failed");

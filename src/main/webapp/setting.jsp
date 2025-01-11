@@ -1,3 +1,4 @@
+<%@page import="com.entity.User"%>
 <%@ page language="java" contentType="text/html; charset=UTF-8"
 	pageEncoding="UTF-8"%>
 <!DOCTYPE html>
@@ -37,7 +38,6 @@ a:hover {
 		style="height: 5px; background-color: #ffab91"></div>
 
 	<div class="container-fluid p-3 bg-light">
-
 		<div class="row">
 			<div class="col-md-3">
 				<h3>
@@ -51,9 +51,30 @@ a:hover {
 					<button class="btn btn-primary my-2 my-sm-0" type="submit">Search</button>
 				</form>
 			</div>
+
 			<div class="col-md-3">
-				<a href="login.jsp" class="btn btn-success ">Login</a> <a
-					href="registration.jsp" class="btn btn-primary ">Register</a>
+				<%
+				HttpSession session5 = request.getSession(false);
+				String userName = (session5 != null) ? (String) session5.getAttribute("name") : null;
+				User userObj = (session5 != null) ? (User) session5.getAttribute("userobj") : null;
+				
+				if (userName != null) {
+				%>
+				<a href=""> <i class="fa-solid fa-cart-shopping"></i>
+				</a> <a href="#" class="btn btn-success"><%=userName%></a>
+
+				<%
+				} else {
+				%>
+
+				<a href="login.jsp" class="btn btn-success">Login</a>
+
+				<%
+				}
+				%>
+
+				<a href="logout" class="btn btn-primary ">Logout</a>
+
 			</div>
 		</div>
 	</div>
@@ -93,7 +114,6 @@ a:hover {
 			</div>
 		</div>
 	</nav>
-
 
 
 	<div class="container">
